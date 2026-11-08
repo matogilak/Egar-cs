@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Egar-CS | Čerpací stanice</title>
+<meta name="description" content="Čerpací stanice Egar-CS: aktuální ceny paliv, služby, otevírací doba a kontakt.">
+<meta property="og:title" content="Egar-CS | Čerpací stanice">
+<meta property="og:description" content="Aktuální ceny paliv, služby, otevírací doba a kontakt.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+<meta name="theme-color" content="#0a2a66">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231560d4'/%3E%3Cpath d='M16 5c4 5.5 7 9 7 13a7 7 0 0 1-14 0c0-4 3-7.500 7-13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ÚPRAVY: texty k doplnění mají třídu "todo". Pro jejich zvýraznění otevřete stránku s příponou ?edit (např. index.html?edit). */
+:root{--navy:#0a2a66;--blue:#1560d4;--blue2:#0f4cb5;--sky:#eef4fe;--line:#dbe5f6;--ink:#10234a;--mute:#5a6d93;--white:#fff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:6rem}
+body{margin:0;font:400 1.0625rem/1.65 "Barlow",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--white);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif;font-weight:700;line-height:1.05;margin:0;color:var(--navy)}
+a{color:var(--blue)}
+svg{max-width:100%}
+:focus-visible{outline:3px solid #ffb800;outline-offset:3px}
+.wrap{width:min(1160px,100% - 2.5rem);margin-inline:auto}
+body.edit .todo{background:#fff6cf;border-bottom:2px dashed #d9a400}
+
+/* horní lišta */
+.top{background:var(--navy);color:#cfe0ff;font-size:.92rem}
+.top .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:.5rem 0}
+.top a{color:var(--white);text-decoration:none;font-weight:500}
+
+/* hlavička */
+header{background:var(--white);position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:4.4rem}
+.logo{display:flex;align-items:center;gap:.65rem;text-decoration:none;color:var(--navy);font:700 1.9rem/1 "Barlow Condensed",Arial,sans-serif;letter-spacing:.01em}
+.logo svg{width:2.2rem;height:2.2rem}
+.logo b{color:var(--blue)}
+nav{display:flex;align-items:center;gap:1.7rem}
+nav a{color:var(--navy);text-decoration:none;font-weight:500;padding:.3rem 0;border-bottom:2px solid transparent}
+nav a:hover{border-color:var(--blue)}
+nav a.cta{background:var(--blue);color:var(--white);padding:.6rem 1.3rem;border-radius:6px;font-weight:600;border:0}
+nav a.cta:hover{background:var(--blue2)}
+.burger{display:none;background:none;border:2px solid var(--navy);color:var(--navy);border-radius:6px;padding:.4rem .8rem;font:600 1rem "Barlow",Arial,sans-serif;cursor:pointer}
+
+/* úvod */
+.hero{background:radial-gradient(900px 480px at 80% 10%,#2b78ee 0,transparent 65%),linear-gradient(135deg,var(--blue2),var(--navy));color:var(--white);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center;padding:4.5rem 0 4rem}
+.hero h1{font-size:clamp(2.9rem,7vw,5.2rem);color:var(--white)}
+.hero p.lead{font-size:1.28rem;max-width:34ch;margin:1.3rem 0 2.1rem;color:#d6e5ff}
+.btn{display:inline-block;padding:.9rem 1.7rem;border-radius:6px;font-weight:600;text-decoration:none;border:2px solid var(--white);color:var(--white)}
+.btn:hover{background:rgba(255,255,255,.14)}
+.btn.solid{background:var(--white);color:var(--navy)}
+.btn.solid:hover{background:var(--sky)}
+.btn.blue{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.btn.blue:hover{background:var(--blue2)}
+.actions{display:flex;gap:.8rem;flex-wrap:wrap}
+.art{justify-self:center;width:min(100%,400px)}
+
+/* ceny */
+.prices{margin-top:-2.6rem;position:relative;z-index:2}
+.prices .box{background:var(--white);border-radius:14px;box-shadow:0 18px 50px rgba(10,42,102,.2);padding:1.8rem 2rem 1.5rem;border:1px solid var(--line)}
+.prices h2{font-size:1.7rem}
+.prices .row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:1rem}
+.price{padding:1rem 1.5rem;border-left:1px solid var(--line)}
+.price:first-child{border-left:0;padding-left:0}
+.price span{display:block;font-weight:600}
+.price small{color:var(--mute);font-size:.9rem}
+.price strong{display:block;font:700 3rem/1.1 "Barlow Condensed",Arial,sans-serif;color:var(--blue);margin-top:.2rem}
+.price strong i{font:500 1rem "Barlow",Arial,sans-serif;font-style:normal;color:var(--mute);margin-left:.3rem}
+.note{margin:.6rem 0 0;font-size:.9rem;color:var(--mute)}
+
+/* sekce */
+section{padding:5rem 0}
+section.alt{background:var(--sky)}
+.head{max-width:46rem;margin-bottom:2.6rem}
+.head h2{font-size:clamp(2.1rem,5vw,3.1rem);margin-bottom:.7rem}
+.head p{margin:0;color:var(--mute);font-size:1.15rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.card{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:1.7rem}
+.card h3{font-size:1.55rem;margin:1rem 0 .4rem}
+.card p{margin:0;color:var(--mute)}
+.ico{width:3.1rem;height:3.1rem;border-radius:10px;background:var(--blue);display:grid;place-items:center}
+.ico svg{width:1.7rem;height:1.7rem;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.about{display:grid;grid-template-columns:1.15fr .85fr;gap:4rem;align-items:center}
+.about h2{font-size:clamp(2.1rem,5vw,3.1rem);margin-bottom:1rem}
+.about p{margin:0 0 1rem}
+.checks{list-style:none;margin:1.4rem 0 0;padding:0}
+.checks li{display:flex;gap:.8rem;padding:.55rem 0;font-weight:500}
+.checks li::before{content:"";flex:none;width:1.4rem;height:1.4rem;margin-top:.15rem;border-radius:50%;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.500l4 4 8-9'/%3E%3C/svg%3E") center/70% no-repeat}
+.stats{background:var(--navy);border-radius:14px;padding:2rem;display:grid;gap:0;color:#cfe0ff}
+.stat{padding:1.1rem 0;border-top:1px solid rgba(255,255,255,.16)}
+.stat:first-child{border-top:0;padding-top:0}
+.stat:last-child{padding-bottom:0}
+.stat strong{display:block;font:700 2.4rem/1.1 "Barlow Condensed",Arial,sans-serif;color:var(--white)}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem}
+.two .card{padding:2rem}
+.two h3{font-size:1.9rem;margin:0 0 1rem}
+.hours{width:100%;border-collapse:collapse}
+.hours th,.hours td{padding:.8rem 0;text-align:left;border-bottom:1px solid var(--line)}
+.hours tr:last-child th,.hours tr:last-child td{border-bottom:0}
+.hours th{font-weight:600}
+.hours td{text-align:right}
+address{font-style:normal}
+address p{margin:0 0 1rem}
+.map{margin-top:1.2rem;height:230px;border-radius:10px;background:repeating-linear-gradient(45deg,#f4f8ff,#f4f8ff 12px,#e6effc 12px,#e6effc 24px);border:1px solid var(--line);display:grid;place-items:center;text-align:center;color:var(--mute);padding:1rem;overflow:hidden}
+.map iframe{width:100%;height:100%;border:0}
+
+/* otázky */
+.faq{max-width:52rem}
+details{border-top:1px solid var(--line);padding:1.15rem 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font:700 1.4rem/1.25 "Barlow Condensed",Arial,sans-serif;color:var(--navy);list-style:none;display:flex;justify-content:space-between;gap:1rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--blue);font-size:1.7rem;line-height:1}
+details[open] summary::after{content:"–"}
+details p{margin:.7rem 0 0;max-width:60ch}
+
+/* výzva */
+.band{background:linear-gradient(100deg,var(--navy),var(--blue2));padding:3.4rem 0}
+.band .wrap{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.band h2{font-size:clamp(1.9rem,4vw,2.6rem);color:var(--white)}
+.band p{margin:.4rem 0 0;color:#d6e5ff}
+
+/* patička */
+footer{background:#071d4a;color:#b9cdf3;padding:3.2rem 0 1.5rem;font-size:.97rem}
+.cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.5rem;padding-bottom:2rem}
+footer h3{font-size:1.25rem;color:var(--white);margin-bottom:.7rem}
+footer p{margin:0 0 .5rem}
+footer a{color:#dbe8ff;text-decoration:none}
+footer a:hover{text-decoration:underline}
+footer ul{margin:0;padding:0;list-style:none}
+footer li{padding:.2rem 0}
+.legal{border-top:1px solid rgba(255,255,255,.15);padding-top:1.2rem;font-size:.88rem}
+
+@media (max-width:900px){
+  .burger{display:block}
+  nav{position:absolute;left:0;right:0;top:100%;background:var(--white);flex-direction:column;align-items:flex-start;gap:0;padding:.4rem 1.25rem 1.2rem;display:none;border-bottom:1px solid var(--line);box-shadow:0 14px 24px rgba(10,42,102,.15)}
+  nav.open{display:flex}
+  nav a{padding:.85rem 0;width:100%;border-bottom:1px solid var(--line)}
+  nav a.cta{margin-top:.9rem;width:auto;text-align:center}
+  header .wrap{position:relative}
+  .hero .wrap{grid-template-columns:1fr;gap:1.5rem;padding:3rem 0 4.4rem}
+  .art{width:min(78%,300px)}
+  .prices .row,.grid,.about,.two,.cols{grid-template-columns:1fr}
+  .price{border-left:0;border-top:1px solid var(--line);padding:1rem 0}
+  .price:first-child{border-top:0}
+  .about{gap:2.4rem}
+  section{padding:3.4rem 0}
+  .top .wrap{justify-content:center;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <span>Čerpací stanice <span class="todo">Město a ulice</span></span>
+    <a href="tel:+420000000000"><span class="todo">+420 000 000 000</span></a>
+  </div>
+</div>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="Egar-CS, úvod">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#1560d4"/><path d="M16 5c4 5.5 7 9 7 13a7 7 0 0 1-14 0c0-4 3-7.5 7-13z" fill="#fff"/></svg>
+      <span>Egar<b>-CS</b></span>
+    </a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="menu">Menu</button>
+    <nav id="menu" aria-label="Hlavní menu">
+      <a href="#ceny">Ceny</a>
+      <a href="#sluzby">Služby</a>
+      <a href="#o-nas">O nás</a>
+      <a href="#kontakt">Otevírací doba</a>
+      <a href="#otazky">Otázky</a>
+      <a class="cta" href="#kontakt">Kontakt</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Čerpací stanice Egar-CS</h1>
+        <p class="lead">Kvalitní palivo za férovou cenu a rychlá obsluha. Natankujte, zaplaťte a jeďte dál.</p>
+        <div class="actions">
+          <a class="btn solid" href="#kontakt">Jak se k nám dostanete</a>
+          <a class="btn" href="https://www.facebook.com/share/19iVn2WqEs/" target="_blank" rel="noopener">Facebook</a>
+        </div>
+      </div>
+      <svg class="art" viewBox="0 0 360 340" role="img" aria-label="Ilustrace čerpacího stojanu">
+        <rect x="14" y="14" width="332" height="26" rx="8" fill="#fff"/>
+        <rect x="14" y="30" width="332" height="10" fill="#8db9ff"/>
+        <rect x="70" y="40" width="10" height="268" fill="#fff" opacity=".35"/>
+        <rect x="280" y="40" width="10" height="268" fill="#fff" opacity=".35"/>
+        <rect x="120" y="70" width="120" height="238" rx="14" fill="#fff"/>
+        <rect x="120" y="70" width="120" height="30" rx="14" fill="#0a2a66"/>
+        <rect x="120" y="86" width="120" height="14" fill="#0a2a66"/>
+        <rect x="138" y="114" width="84" height="46" rx="6" fill="#0a2a66"/>
+        <text x="180" y="147" text-anchor="middle" font-family="Barlow Condensed,Arial,sans-serif" font-size="30" font-weight="700" fill="#8db9ff">00,00</text>
+        <path d="M180 176c9 12 15 19 15 28a15 15 0 0 1-30 0c0-9 6-16 15-28z" fill="#1560d4"/>
+        <rect x="138" y="236" width="84" height="12" rx="6" fill="#dbe5f6"/>
+        <rect x="138" y="258" width="56" height="12" rx="6" fill="#dbe5f6"/>
+        <path d="M240 190c52 0 56 38 42 76" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+        <rect x="270" y="262" width="26" height="40" rx="6" fill="#fff" transform="rotate(12 283 282)"/>
+        <rect x="100" y="308" width="160" height="14" rx="7" fill="#fff"/>
+        <rect x="0" y="322" width="360" height="6" rx="3" fill="#fff" opacity=".4"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="prices" id="ceny">
+    <div class="wrap">
+      <div class="box">
+        <h2>Aktuální ceny paliv</h2>
+        <div class="row">
+          <div class="price"><span>Natural 95</span><small>bezolovnatý benzin</small><strong class="todo">00,00<i>Kč/l</i></strong></div>
+          <div class="price"><span>Nafta</span><small>motorová nafta</small><strong class="todo">00,00<i>Kč/l</i></strong></div>
+          <div class="price"><span class="todo">Další palivo</span><small class="todo">popis paliva</small><strong class="todo">00,00<i>Kč/l</i></strong></div>
+        </div>
+        <p class="note">Ceny platí k <span class="todo">datum</span>. Rozhodující je cena na stojanu.</p>
+      </div>
+    </div>
+  </div>
+
+  <section id="sluzby">
+    <div class="wrap">
+      <div class="head">
+        <h2>Vše pro vás a vaše auto na jednom místě</h2>
+        <p>Zastavte se na pár minut. Postaráme se o palivo i o drobnosti na cestu.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M5 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h14M15 9h2a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0V9l-3-3M8 7h4"/></svg></div>
+          <h3>Pohonné hmoty</h3>
+          <p>Benzin a nafta z čerpacích stojanů. <span class="todo">Doplňte druhy paliv.</span></p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 7h18v12H3zM3 11h18M7 16h3"/></svg></div>
+          <h3>Pohodlná platba</h3>
+          <p>Zaplatíte rychle a bez zdržování. <span class="todo">Hotovost, karty, další možnosti.</span></p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 8h16l-1.500 12h-13zM9 8V6a3 3 0 0 1 6 0v2"/></svg></div>
+          <h3>Prodejna</h3>
+          <p>Občerstvení, nápoje a drobné zboží na cestu. <span class="todo">Doplňte sortiment.</span></p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/></svg></div>
+          <h3>Vzduch do pneumatik</h3>
+          <p class="todo">Doplňte, zda tuto službu máte, jinak kartu smažte.</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3c4 5 6 8 6 11a6 6 0 0 1-12 0c0-3 2-6 6-11z"/></svg></div>
+          <h3>AdBlue a kapaliny</h3>
+          <p class="todo">Doplňte, zda tuto službu máte, jinak kartu smažte.</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5.500 6 .7-4.500 4 1.300 5.900L12 16l-5.300 3.100L8 13.200l-4.500-4 6-.7z"/></svg></div>
+          <h3>Další služby</h3>
+          <p class="todo">Plynové lahve, autokosmetika a další nabídka.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="o-nas">
+    <div class="wrap about">
+      <div>
+        <h2>O stanici Egar-CS</h2>
+        <p class="todo">Napište 2 až 3 věty o stanici: kde stojí, jak dlouho funguje, čím se liší a koho obsluhujete.</p>
+        <p class="todo">Můžete přidat i pár slov o týmu nebo o tom, co zákazníci na vaší stanici oceňují.</p>
+        <ul class="checks">
+          <li>Kvalitní palivo z ověřených zdrojů</li>
+          <li>Rychlá a příjemná obsluha</li>
+          <li class="todo">Doplňte další výhodu</li>
+        </ul>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong class="todo">0 let</strong>na trhu</div>
+        <div class="stat"><strong class="todo">0 stojanů</strong>obsloužíme najednou</div>
+        <div class="stat"><strong class="todo">0 druhů paliva</strong>v nabídce</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="wrap">
+      <div class="head"><h2>Otevírací doba a kontakt</h2></div>
+      <div class="two">
+        <div class="card">
+          <h3>Otevírací doba</h3>
+          <table class="hours">
+            <tr><th>Pondělí až pátek</th><td class="todo">00:00 – 00:00</td></tr>
+            <tr><th>Sobota</th><td class="todo">00:00 – 00:00</td></tr>
+            <tr><th>Neděle</th><td class="todo">00:00 – 00:00</td></tr>
+            <tr><th>Svátky</th><td class="todo">doplňte</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Kde nás najdete</h3>
+          <address>
+            <p><strong>Egar-CS</strong><br><span class="todo">Ulice a číslo, PSČ Město</span></p>
+            <p>Telefon: <a href="tel:+420000000000"><span class="todo">+420 000 000 000</span></a><br>
+               E-mail: <a href="mailto:info@example.cz"><span class="todo">info@example.cz</span></a></p>
+          </address>
+          <div class="map" id="mapa"><span>Tady se zobrazí mapa.<br>Vložte iframe z Google Map (Sdílet, Vložit mapu).</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="otazky">
+    <div class="wrap">
+      <div class="head"><h2>Časté otázky</h2></div>
+      <div class="faq">
+        <details><summary>Jak se k vám dostanu?</summary><p class="todo">Popište polohu: u které silnice, obce nebo křižovatky stanice leží.</p></details>
+        <details><summary>Jakými způsoby můžu zaplatit?</summary><p class="todo">Hotovost, platební karty, firemní karty a další možnosti.</p></details>
+        <details><summary>Jsou ceny na webu aktuální?</summary><p>Ceny na webu aktualizujeme ručně. Pro jistotu se řiďte cenami na stojanu.</p></details>
+        <details><summary>Jak vás kontaktuji?</summary><p>Zavolejte nám, napište e-mail nebo nám pošlete zprávu přes <a href="https://www.facebook.com/share/19iVn2WqEs/" target="_blank" rel="noopener">Facebook</a>.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <div class="band">
+    <div class="wrap">
+      <div>
+        <h2>Novinky a akce najdete na Facebooku</h2>
+        <p>Sledujte nás, ať vám neunikne žádná změna.</p>
+      </div>
+      <a class="btn solid" href="https://www.facebook.com/share/19iVn2WqEs/" target="_blank" rel="noopener">Egar-CS na Facebooku</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h3>Egar-CS</h3>
+        <p>Čerpací stanice. Palivo, prodejna a rychlá obsluha.</p>
+        <p class="todo">Obchodní jméno, IČO</p>
+      </div>
+      <div>
+        <h3>Na webu</h3>
+        <ul>
+          <li><a href="#ceny">Ceny paliv</a></li>
+          <li><a href="#sluzby">Služby</a></li>
+          <li><a href="#o-nas">O nás</a></li>
+          <li><a href="#otazky">Časté otázky</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Kontakt</h3>
+        <ul>
+          <li><a href="#kontakt">Otevírací doba</a></li>
+          <li><a href="#kontakt">Adresa a mapa</a></li>
+          <li><a href="https://www.facebook.com/share/19iVn2WqEs/" target="_blank" rel="noopener">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">© <span id="rok">2026</span> Egar-CS. Všechna práva vyhrazena.</div>
+  </div>
+</footer>
+
+<script>
+document.getElementById("rok").textContent=new Date().getFullYear();
+if(/[?&]edit/.test(location.search))document.body.classList.add("edit");
+var b=document.getElementById("burger"),m=document.getElementById("menu");
+b.addEventListener("click",function(){var o=m.classList.toggle("open");b.setAttribute("aria-expanded",o)});
+m.addEventListener("click",function(e){if(e.target.tagName==="A"){m.classList.remove("open");b.setAttribute("aria-expanded","false")}});
+</script>
+</body>
+</html>
